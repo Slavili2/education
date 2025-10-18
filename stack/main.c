@@ -66,29 +66,26 @@ void menu()
                \nQ - quit program\
                \nC - corrupt data\n");
         printf("\nYour choice: ");
-        userChoice = getch();
+        fflush(stdin);
+        userChoice = getchar();
         userChoice = toupper(userChoice);
 
         switch(userChoice){
-            case 'A': putch(userChoice);
-                      printf("\nEnter value: ");
+            case 'A': printf("\nEnter value: ");
                       fflush(stdin);
                       scanf(" %d", &userValue);
                       uStack.push(userValue);
                       break;
-            case 'D': putch(userChoice);
-                      uStack.pop();
+            case 'D': uStack.pop();
                       break;
-            case 'S': putch(userChoice);
-                      putch('\n');
+            case 'S': putchar('\n');
                       select();
                       break;
-            case 'Q': putch(userChoice);
-                      quite();
+            case 'Q': quite();
                       break;
-            case 'C': putch(userChoice);
-                      corruptData();
+            case 'C': corruptData();
                       break;
+            default: printf("Unknown choice\n");
         }
     }
 }

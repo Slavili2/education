@@ -31,6 +31,7 @@ void quite();
 uint32_t seedValue(uint32_t seed);
 void corruptData(); // Ёмул€ци€ повреждени€ данных в пам€ти
 int * allocateMemory(); // ѕервоначальное выделение пам€ти
+int * reAllocateMemory();
 
 struct userStack uStack;
 const uint8_t key = 98; // дл€ murmurhash3
@@ -122,18 +123,18 @@ void push(int userValue)
         *(uStack.data + uStack.stackSize) = userValue;
         uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
     } else if(uStack.stackCapacity - uStack.stackSize == uStack.stackCapacity){
-        uStack.data = (int *)realloc( (void *)uStack.data, (uStack.stackCapacity * 2) * sizeof(int) );
-        printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
+        uStack.data = reAllocateMemory();
+        //printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
         for(tempStackSize = uStack.stackCapacity - 1;tempStackSize >= 0;tempStackSize--, i++){
             tempValue = *(uStack.data + tempStackSize);
             *(uStack.data + (uStack.stackCapacity * 2 - i)) = tempValue;
-            printf("tempStackSize = %d, tempValue = %d, i = %d\n", tempStackSize, tempValue, i);
+            //printf("tempStackSize = %d, tempValue = %d, i = %d\n", tempStackSize, tempValue, i);
         }
         uStack.stackCapacity = uStack.stackCapacity * 2;
         uStack.stackSize = uStack.stackCapacity - i;
         *(uStack.data + uStack.stackSize) = userValue;
         uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
-        printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
+        //printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
     }
 }
 
@@ -165,4 +166,12 @@ int * allocateMemory()
     if(!tempData)
         exit(1);
     return tempData;
+}
+
+int * reAllocateMemory()
+{
+    uStack.data = (int *)realloc( (void *)uStack.data, (uStack.stackCapacity * 2) * sizeof(int) );
+    if(!uStack.data)
+        exit(1);
+    return uStack.data;
 }

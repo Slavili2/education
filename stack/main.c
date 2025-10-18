@@ -42,7 +42,8 @@ int main()
     uStack.pop = pop;
     uStack.push = push;
     uStack.murmur3_32 = murmur3_32;
-
+    uStack.stackCapacity = START_VALUE;
+    uStack.stackSize = uStack.stackCapacity;
     menu();
 
     return 0;
@@ -53,11 +54,7 @@ void menu()
 
 
     int userChoice, userValue = 0;
-    printf("Enter the capacity: ");
-    fflush(stdin);
-    scanf(" %Iu", &uStack.stackCapacity);
     uStack.data = allocateMemory();
-    uStack.stackSize = uStack.stackCapacity;
     uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));;
 
     while(1){

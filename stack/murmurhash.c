@@ -1,8 +1,8 @@
-#ifndef MURMURHASH_H_INCLUDED
-#define MURMURHASH_H_INCLUDED
+#ifndef MURMURHASH_C_INCLUDED
+#define MURMURHASH_C_INCLUDED
 #include <stdint.h>
 #include <string.h>
-#endif // MURMURHASH_H_INCLUDED
+#endif // MURMURHASH_C_INCLUDED
 static inline uint32_t murmur_32_scramble(uint32_t k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);

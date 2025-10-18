@@ -1,0 +1,6 @@
+#ifndef STACKLIB_C_INCLUDED
+#define STACKLIB_C_INCLUDED
+
+#endif // STACKLIB_C_INCLUDED
+
+

@@ -96,6 +96,7 @@ void select()
         exit(10);
     for(int i = uStack.stackSize; uStack.stackSize != uStack.stackCapacity && i < uStack.stackCapacity ; i++)
         printf("%Iu -> %d \n", uStack.stackCapacity - i, *(uStack.data + i));
+    printf("uStack.stackCapacity = %Iu\nuStack.stackSize = %Iu\n", uStack.stackCapacity, uStack.stackSize);
 }
 
 void pop()
@@ -112,17 +113,28 @@ void pop()
 
 void push(int userValue)
 {
+    int tempStackSize = 0, i = 1;
+    int tempValue;
     if(uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed)) != uStack.hash)
         exit(10);
     if(uStack.stackCapacity - uStack.stackSize < uStack.stackCapacity && uStack.stackSize >= 0){
         uStack.stackSize--;
         *(uStack.data + uStack.stackSize) = userValue;
         uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
+    } else if(uStack.stackCapacity - uStack.stackSize == uStack.stackCapacity){
+        uStack.data = (int *)realloc( (void *)uStack.data, (uStack.stackCapacity * 2) * sizeof(int) );
+        printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
+        for(tempStackSize = uStack.stackCapacity - 1;tempStackSize >= 0;tempStackSize--, i++){
+            tempValue = *(uStack.data + tempStackSize);
+            *(uStack.data + (uStack.stackCapacity * 2 - i)) = tempValue;
+            printf("tempStackSize = %d, tempValue = %d, i = %d\n", tempStackSize, tempValue, i);
+        }
+        uStack.stackCapacity = uStack.stackCapacity * 2;
+        uStack.stackSize = uStack.stackCapacity - i;
+        *(uStack.data + uStack.stackSize) = userValue;
+        uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
+        printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
     }
-    else
-        printf("\nStack overflow\n");
-
-
 }
 
 void quite()

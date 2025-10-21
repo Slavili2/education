@@ -1,6 +1,6 @@
-/* –еализаци€ пользовательского стэка:
-    push - добавить элемент в верх стэка (в top)
-    pop - удалить элемент из верха стэка (из top'а)
+/* Custom stack implementation:
+    push - add an element to the top of the stack
+    pop - remove an element from the top of the stack
 https://en.cppreference.com/w/cpp/container/stack.html
 */
 
@@ -9,18 +9,16 @@ https://en.cppreference.com/w/cpp/container/stack.html
 #include <ctype.h>
 #include <conio.h>
 #include "murmurhash.h"
-//#include "stacklib.h"
 
 #define START_VALUE 2
 
-struct userStack{ // пользовательских стэк
-    int * data;  // массив данных
-    size_t stackCapacity; // максимальна€ вместимость стека
-    size_t stackSize; // заполненность stackSize < stackCapcity
+struct userStack{ // user stack
+    int * data;  // aray of data
+    size_t stackCapacity; // maximum stack capacity
+    size_t stackSize; // current stack fullness (stackSize <= stackCapcity)
     uint32_t hash;
     void (*pop)();
     void (*push)();
-    uint32_t (*murmur3_32)(const uint8_t* key, size_t len, uint32_t seed);
 };
 
 void pop();
@@ -29,21 +27,20 @@ void select();
 void menu();
 void quite();
 uint32_t seedValue(uint32_t seed);
-void corruptData(); // Ёмул€ци€ повреждени€ данных в пам€ти
-int * allocateMemory(); // ѕервоначальное выделение пам€ти
-int * reAllocateMemory();
+void corruptData(); // Emulating data corruption in memory
+int * allocateMemory(); // Initial memory allocation
+void reAllocateMemory(size_t size); //
 
 struct userStack uStack;
-const uint8_t key = 98; // дл€ murmurhash3
+const uint8_t key = 98; // for murmurhash3
 uint32_t seed = 0;
 
 int main()
 {
     uStack.pop = pop;
     uStack.push = push;
-    uStack.murmur3_32 = murmur3_32;
     uStack.stackCapacity = START_VALUE;
-    uStack.stackSize = uStack.stackCapacity;
+    uStack.stackSize = 0;
     menu();
 
     return 0;
@@ -51,11 +48,9 @@ int main()
 
 void menu()
 {
-
-
     int userChoice, userValue = 0;
     uStack.data = allocateMemory();
-    uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));;
+    uStack.hash = murmur3_32(&key, uStack.stackSize,seedValue(seed));
 
     while(1){
         printf("\nA - add value into stack\
@@ -90,48 +85,52 @@ void menu()
 
 void select()
 {
-    if(uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed)) != uStack.hash)
-        exit(10);
-    for(int i = uStack.stackSize; uStack.stackSize != uStack.stackCapacity && i < uStack.stackCapacity ; i++)
-        printf("%Iu -> %d \n", uStack.stackCapacity - i, *(uStack.data + i));
-    printf("uStack.stackCapacity = %Iu\nuStack.stackSize = %Iu\n", uStack.stackCapacity, uStack.stackSize);
+    if(murmur3_32(&key, uStack.stackSize,seedValue(seed)) != uStack.hash){
+        free(uStack.data);
+         exit(10);
+    }
+    for(int i = uStack.stackSize - 1; i >= 0; i--)
+        printf("%d -> %d \n", i, *(uStack.data + i));
 }
 
 void pop()
 {
-    if(uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed)) != uStack.hash)
+    if(murmur3_32(&key, uStack.stackSize,seedValue(seed)) != uStack.hash){
+        free(uStack.data);
         exit(10);
-    if(uStack.stackSize >= 0 && uStack.stackSize != uStack.stackCapacity){
-        *(uStack.data + uStack.stackSize) = 0; // Ёто действие под сомнением
-        uStack.stackSize++;
-        uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
+    }
+
+    if(uStack.stackSize > 0 && uStack.stackSize <= uStack.stackCapacity){
+        *(uStack.data + uStack.stackSize - 1) = 0;
+        uStack.stackSize--;
+        uStack.hash = murmur3_32(&key, uStack.stackSize,seedValue(seed));
+        if( (uStack.stackSize * 2) == uStack.stackCapacity && uStack.stackCapacity > 2){
+            uStack.stackCapacity = uStack.stackCapacity/2;
+            printf("\nuStack.stackCapacity = %Iu\n", uStack.stackCapacity);
+            reAllocateMemory(uStack.stackCapacity);
+        }
+
     }else
         printf("\nStack is empty.\n");
 }
 
 void push(int userValue)
 {
-    int tempStackSize = 0, i = 1;
-    int tempValue;
-    if(uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed)) != uStack.hash)
-        exit(10);
-    if(uStack.stackCapacity - uStack.stackSize < uStack.stackCapacity && uStack.stackSize >= 0){
-        uStack.stackSize--;
+    if(murmur3_32(&key, uStack.stackSize,seedValue(seed)) != uStack.hash){
+        free(uStack.data);
+         exit(10);
+    }
+    if(uStack.stackCapacity - uStack.stackSize > 0){
         *(uStack.data + uStack.stackSize) = userValue;
-        uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
-    } else if(uStack.stackCapacity - uStack.stackSize == uStack.stackCapacity){
-        uStack.data = reAllocateMemory();
-        //printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
-        for(tempStackSize = uStack.stackCapacity - 1;tempStackSize >= 0;tempStackSize--, i++){
-            tempValue = *(uStack.data + tempStackSize);
-            *(uStack.data + (uStack.stackCapacity * 2 - i)) = tempValue;
-            //printf("tempStackSize = %d, tempValue = %d, i = %d\n", tempStackSize, tempValue, i);
-        }
+        uStack.stackSize++;
+        uStack.hash = murmur3_32(&key, uStack.stackSize,seedValue(seed));
+    }
+    else {
         uStack.stackCapacity = uStack.stackCapacity * 2;
-        uStack.stackSize = uStack.stackCapacity - i;
+        reAllocateMemory(uStack.stackCapacity);
         *(uStack.data + uStack.stackSize) = userValue;
-        uStack.hash = uStack.murmur3_32(&key, uStack.stackCapacity - uStack.stackSize,seedValue(seed));
-        //printf("tempStackSize  = %d, %Iu\n", tempStackSize, uStack.stackCapacity);
+        uStack.stackSize++;
+        uStack.hash = murmur3_32(&key, uStack.stackSize,seedValue(seed));
     }
 }
 
@@ -142,8 +141,8 @@ void quite()
 }
 uint32_t seedValue(uint32_t seed)
 {
-    for(size_t i = uStack.stackCapacity - uStack.stackSize; i > 0; i-- ){
-        seed^= *(uStack.data+ (uStack.stackCapacity - i));
+    for(int i = uStack.stackSize; i > 0; i-- ){
+        seed^= *(uStack.data + uStack.stackSize - 1);
         seed = seed << 2;
     }
     return seed;
@@ -151,9 +150,8 @@ uint32_t seedValue(uint32_t seed)
 
 void corruptData()
 {
-    if(uStack.stackCapacity - uStack.stackSize > 0)
-        *(uStack.data + uStack.stackSize) = -1;
-
+    if(uStack.stackSize > 0)
+        *(uStack.data + uStack.stackSize - 1) = -1;
 }
 
 int * allocateMemory()
@@ -165,10 +163,9 @@ int * allocateMemory()
     return tempData;
 }
 
-int * reAllocateMemory()
+void reAllocateMemory(size_t size)
 {
-    uStack.data = (int *)realloc( (void *)uStack.data, (uStack.stackCapacity * 2) * sizeof(int) );
+    uStack.data = (int *)realloc( (void *)uStack.data, size * sizeof(int) );
     if(!uStack.data)
         exit(1);
-    return uStack.data;
 }

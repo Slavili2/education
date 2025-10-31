@@ -1,14 +1,13 @@
 #ifndef STACKLIB_C_INCLUDED
 #define STACKLIB_C_INCLUDED
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#endif // STACKLIB_C_INCLUDED
 #include "murmurhash.h"
 #include "userlib.h"
 #include "userstack.h"
 
-#endif // STACKLIB_C_INCLUDED
 
 void allocateMemory(struct userStack * uStack)
 {

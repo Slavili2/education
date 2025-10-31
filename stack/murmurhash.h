@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MURMURHASH_H_INCLUDED
 #define MURMURHASH_H_INCLUDED
 #include <stdint.h>

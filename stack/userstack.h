@@ -1,5 +1,4 @@
-#ifndef USERSTACK_H_INCLUDED
-#define USERSTACK_H_INCLUDED
+#pragma once
 struct userStack{ // user stack
     int * data;  // aray of data
     size_t stackCapacity; // maximum stack capacity
@@ -8,4 +7,4 @@ struct userStack{ // user stack
     void (*pop)(struct userStack * uStack, const uint8_t* key, uint32_t seed);
     void (*push)(struct userStack * uStack, int userValue, const uint8_t* key, uint32_t seed);
 };
-#endif // USERSTACK_H_INCLUDED
+

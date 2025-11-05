@@ -7,7 +7,6 @@ https://en.cppreference.com/w/cpp/container/stack.html
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <conio.h>
 #include "murmurhash.h"
 #include "userlib.h"
 #include "stacklib.h"

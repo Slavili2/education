@@ -39,19 +39,12 @@ void help(){
 
 void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 {
-    enum switchOperations{
-        ADD = 'a',
-        DELETE = 'd',
-        SHOW = 's',
-        QUIT = 'q',
-        CORRUPT = 'c'
-    };
+    switchOperations userChoice;
     int userValue = 0;
-    enum switchOperations userChoice;
     allocateMemory(uStack);
     uStack->hash = murmur3_32(key, uStack->stackSize,seedValue(uStack, seed));
 
-    while('q' != userChoice){
+    do{
         help();
         printf("\nSelect an action: ");
         userChoice = getchar();
@@ -74,6 +67,6 @@ void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
                           break;
             default: printf("\nUnknown an action!!!\n");
         }
-    }
+    }while('q' != userChoice);
 }
 

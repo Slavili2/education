@@ -8,3 +8,11 @@ struct userStack{ // user stack
     void (*push)(struct userStack * uStack, int userValue, const uint8_t* key, uint32_t seed);
 };
 
+typedef enum {
+    ADD = 'a',
+    DELETE = 'd',
+    SHOW = 's',
+    QUIT = 'q',
+    CORRUPT = 'c'
+} switchOperations;
+

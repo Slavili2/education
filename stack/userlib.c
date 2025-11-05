@@ -1,21 +1,10 @@
-#ifndef USERLIB_C_INCLUDED
-#define USERLIB_C_INCLUDED
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#endif // USERLIB_C_INCLUDED
+
 #include "murmurhash.h"
 #include "stacklib.h"
 #include "userstack.h"
-
-uint32_t seedValue(struct userStack * uStack, uint32_t seed)
-{
-    for(int i = uStack->stackSize; i > 0; i-- ){
-        seed^= *(uStack->data + uStack->stackSize - 1);
-        seed = seed << 2;
-    }
-    return seed;
-}
 
 void select(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 {

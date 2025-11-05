@@ -1,11 +1,8 @@
-#ifndef STACKLIB_C_INCLUDED
-#define STACKLIB_C_INCLUDED
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#endif // STACKLIB_C_INCLUDED
+
 #include "murmurhash.h"
-#include "userlib.h"
 #include "userstack.h"
 
 
@@ -56,7 +53,7 @@ void pop(struct userStack * uStack, const uint8_t* key, uint32_t seed)
         uStack->hash = murmur3_32(key, uStack->stackSize,seedValue(uStack, seed));
         if( (uStack->stackSize * 2) == uStack->stackCapacity && uStack->stackCapacity > 2){
             uStack->stackCapacity = uStack->stackCapacity/2;
-            printf("\nuStack->stackCapacity = %Iu\n", uStack->stackCapacity);
+            printf("\nuStack->stackCapacity = %llu\n", uStack->stackCapacity);
             reAllocateMemory(uStack);
         }
 

@@ -1,8 +1,17 @@
-#ifndef MURMURHASH_C_INCLUDED
-#define MURMURHASH_C_INCLUDED
 #include <stdint.h>
 #include <string.h>
-#endif // MURMURHASH_C_INCLUDED
+#include "userstack.h"
+
+
+uint32_t seedValue(struct userStack * uStack, uint32_t seed)
+{
+    for(int i = uStack->stackSize; i > 0; i-- ){
+        seed^= *(uStack->data + uStack->stackSize - 1);
+        seed = seed << 2;
+    }
+    return seed;
+}
+
 static inline uint32_t murmur_32_scramble(uint32_t k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);

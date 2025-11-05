@@ -1,4 +1,5 @@
 #pragma once
+
 struct userStack{ // user stack
     int * data;  // aray of data
     size_t stackCapacity; // maximum stack capacity

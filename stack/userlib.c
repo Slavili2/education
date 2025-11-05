@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-
 #include "murmurhash.h"
 #include "stacklib.h"
 #include "userstack.h"
@@ -22,6 +21,14 @@ void quit(struct userStack * uStack)
     free(uStack->data);
 }
 
+int enterValue(int * userValue)
+{
+    int result = 0;
+    printf("\nEnter value(integer): ");
+    result = scanf(" %d", userValue);
+    while (getchar() != '\n');
+    return result;
+}
 
 void corruptData(struct userStack * uStack)
 {
@@ -30,7 +37,7 @@ void corruptData(struct userStack * uStack)
 }
 
 void help(){
-    printf("\na - add value into stack\
+    printf("\na - add value (integer) into stack\
            \nd - delete top element\
            \ns - display on screen\
            \nq - quit program\
@@ -48,24 +55,31 @@ void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
         help();
         printf("\nSelect an action: ");
         userChoice = getchar();
-        while (getchar() != '\n');
+        while(getchar() != '\n');
 
         switch(userChoice){
-            case ADD: printf("\nEnter value: ");
-                      scanf(" %d", &userValue);
-                      while (getchar() != '\n');
-                      uStack->push(uStack, userValue, key, seed);
-                      break;
-            case DELETE: uStack->pop(uStack, key, seed);
-                         break;
-            case SHOW: putchar('\n');
-                       select(uStack, key, seed);
-                       break;
-            case QUIT: quit(uStack);
-                       break;
-            case CORRUPT: corruptData(uStack);
-                          break;
-            default: printf("\nUnknown an action!!!\n");
+            case ADD:
+                 if(enterValue(&userValue) == 0){
+                    printf("\nYou enter bad value!\n");
+                    continue;
+                 }
+                 uStack->push(uStack, userValue, key, seed);
+                 break;
+            case DELETE:
+                 uStack->pop(uStack, key, seed);
+                 break;
+            case SHOW:
+                 putchar('\n');
+                 select(uStack, key, seed);
+                 break;
+            case QUIT:
+                 quit(uStack);
+                 break;
+            case CORRUPT:
+                 corruptData(uStack);
+                 break;
+            default:
+                 printf("\nUnknown an action!!!\n");
         }
     }while('q' != userChoice);
 }

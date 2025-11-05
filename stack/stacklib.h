@@ -1,7 +1,6 @@
-#ifndef STACKLIB_H_INCLUDED
-#define STACKLIB_H_INCLUDED
+#pragma once
+
 #include <stdint.h>
-#endif // STACKLIB_H_INCLUDED
 #include "userstack.h"
 
 void push(struct userStack * uStack, int userValue, const uint8_t* key, uint32_t seed);

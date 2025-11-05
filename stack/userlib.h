@@ -1,5 +1,7 @@
 #pragma once
+
 #include "userstack.h"
+
 void select(struct userStack * uStack, const uint8_t* key, uint32_t seed);
 uint32_t seedValue(struct userStack * uStack, uint32_t seed);
 void quite(struct userStack * uStack);

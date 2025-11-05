@@ -20,7 +20,6 @@ void select(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 void quit(struct userStack * uStack)
 {
     free(uStack->data);
-    exit(EXIT_SUCCESS);
 }
 
 
@@ -52,7 +51,7 @@ void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
     allocateMemory(uStack);
     uStack->hash = murmur3_32(key, uStack->stackSize,seedValue(uStack, seed));
 
-    for(;;){
+    while('q' != userChoice){
         help();
         printf("\nSelect an action: ");
         userChoice = getchar();
@@ -73,7 +72,7 @@ void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
                        break;
             case CORRUPT: corruptData(uStack);
                           break;
-            default: printf("\nUnknown a action!!!\n");
+            default: printf("\nUnknown an action!!!\n");
         }
     }
 }

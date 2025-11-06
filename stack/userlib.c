@@ -9,7 +9,8 @@ void select(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 {
     if(murmur3_32(key, uStack->stackSize,seedValue(uStack, seed)) != uStack->hash){
         free(uStack->data);
-         exit(10);
+        printf("\nThe data is corrupted\n");
+        exit(EXIT_FAILURE);
     }
     for(int i = uStack->stackSize - 1; i >= 0; i--)
         printf("%d -> %d \n", i, *(uStack->data + i));

@@ -26,7 +26,8 @@ void push(struct userStack * uStack, int userValue, const uint8_t* key, uint32_t
 {
     if(murmur3_32(key, uStack->stackSize,seedValue(uStack, seed)) != uStack->hash){
         free(uStack->data);
-         exit(10);
+        printf("\nThe data is corrupted\n");
+        exit(EXIT_FAILURE);
     }
     if(uStack->stackCapacity - uStack->stackSize > 0){
         *(uStack->data + uStack->stackSize) = userValue;
@@ -49,7 +50,8 @@ void pop(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 {
     if(murmur3_32(key, uStack->stackSize,seedValue(uStack, seed)) != uStack->hash){
         free(uStack->data);
-        exit(10);
+        printf("\nThe data is corrupted\n");
+        exit(EXIT_FAILURE);
     }
 
     if(uStack->stackSize > 0 && uStack->stackSize <= uStack->stackCapacity){

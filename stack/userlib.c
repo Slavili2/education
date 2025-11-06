@@ -48,7 +48,11 @@ void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 {
     switchOperations userChoice;
     int userValue = 0;
-    allocateMemory(uStack);
+    if(allocateMemory(uStack)){
+        printf("\nOut of memory!\n");
+        exit(EXIT_FAILURE);
+    }
+
     uStack->hash = murmur3_32(key, uStack->stackSize,seedValue(uStack, seed));
 
     do{

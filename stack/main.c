@@ -12,6 +12,7 @@ https://en.cppreference.com/w/cpp/container/stack.html
 #include "stacklib.h"
 #include "userstack.h"
 
+//#define START_VALUE 0xFFFFFFFFFFFFFF
 #define START_VALUE 2
 
 int main()

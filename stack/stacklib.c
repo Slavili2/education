@@ -6,18 +6,20 @@
 #include "userstack.h"
 
 
-void allocateMemory(struct userStack * uStack)
+int allocateMemory(struct userStack * uStack)
 {
     uStack->data = (int *)calloc(uStack->stackCapacity, sizeof(int));
     if(!uStack->data)
-        exit(1);
+        return 1;
+    return 0;
 }
 
-void reAllocateMemory(struct userStack * uStack)
+int reAllocateMemory(struct userStack * uStack)
 {
     uStack->data = (int *)realloc( (void *)uStack->data, uStack->stackCapacity * sizeof(int) );
     if(!uStack->data)
-        exit(1);
+        return 1;
+    return 0;
 }
 
 void push(struct userStack * uStack, int userValue, const uint8_t* key, uint32_t seed)
@@ -33,7 +35,10 @@ void push(struct userStack * uStack, int userValue, const uint8_t* key, uint32_t
     }
     else {
         uStack->stackCapacity = uStack->stackCapacity * 2;
-        reAllocateMemory(uStack);
+        if(reAllocateMemory(uStack)){
+            printf("\nOut of memory!\n");
+            exit(EXIT_FAILURE);
+        }
         *(uStack->data + uStack->stackSize) = userValue;
         uStack->stackSize++;
         uStack->hash = murmur3_32(key, uStack->stackSize,seedValue(uStack, seed));
@@ -54,7 +59,10 @@ void pop(struct userStack * uStack, const uint8_t* key, uint32_t seed)
         if( (uStack->stackSize * 2) == uStack->stackCapacity && uStack->stackCapacity > 2){
             uStack->stackCapacity = uStack->stackCapacity/2;
             printf("\nuStack->stackCapacity = %llu\n", uStack->stackCapacity);
-            reAllocateMemory(uStack);
+            if(reAllocateMemory(uStack)){
+                printf("\nOut of memory!\n");
+                exit(EXIT_FAILURE);
+            }
         }
 
     }else

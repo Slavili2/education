@@ -6,7 +6,7 @@
 #include "userstack.h"
 
 
-int allocateMemory(struct userStack * uStack)
+int allocateMemory(userStack * uStack)
 {
     uStack->data = (int *)calloc(uStack->stackCapacity, sizeof(int));
     if(!uStack->data)
@@ -14,7 +14,7 @@ int allocateMemory(struct userStack * uStack)
     return 0;
 }
 
-int reAllocateMemory(struct userStack * uStack)
+int reAllocateMemory(userStack * uStack)
 {
     uStack->data = (int *)realloc( (void *)uStack->data, uStack->stackCapacity * sizeof(int) );
     if(!uStack->data)

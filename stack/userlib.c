@@ -5,7 +5,7 @@
 #include "stacklib.h"
 #include "userstack.h"
 
-void select(struct userStack * uStack, const uint8_t* key, uint32_t seed)
+void select(userStack * uStack, const uint8_t* key, uint32_t seed)
 {
     if(murmur3_32(key, uStack->stackSize,seedValue(uStack, seed)) != uStack->hash){
         free(uStack->data);
@@ -17,7 +17,7 @@ void select(struct userStack * uStack, const uint8_t* key, uint32_t seed)
 }
 
 
-void quit(struct userStack * uStack)
+void quit(userStack * uStack)
 {
     free(uStack->data);
 }
@@ -31,7 +31,7 @@ int enterValue(int * userValue)
     return result;
 }
 
-void corruptData(struct userStack * uStack)
+void corruptData(userStack * uStack)
 {
     if(uStack->stackSize > 0)
         *(uStack->data + uStack->stackSize - 1) = -1;
@@ -45,7 +45,7 @@ void help(){
            \nc - corrupt data\n");
 }
 
-void menu(struct userStack * uStack, const uint8_t* key, uint32_t seed)
+void menu(userStack * uStack, const uint8_t* key, uint32_t seed)
 {
     switchOperations userChoice;
     int userValue = 0;

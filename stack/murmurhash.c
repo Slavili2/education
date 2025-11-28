@@ -3,7 +3,7 @@
 #include "userstack.h"
 
 
-uint32_t seedValue(struct userStack * uStack, uint32_t seed)
+uint32_t seedValue(userStack * uStack, uint32_t seed)
 {
     for(int i = uStack->stackSize; i > 0; i-- ){
         seed^= *(uStack->data + uStack->stackSize - 1);

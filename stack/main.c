@@ -12,12 +12,11 @@ https://en.cppreference.com/w/cpp/container/stack.html
 #include "stacklib.h"
 #include "userstack.h"
 
-//#define START_VALUE 0xFFFFFFFFFFFFFF
 #define START_VALUE 2
 
 int main()
 {
-    struct userStack uStack;
+    userStack uStack;
     const uint8_t key = 98; // for murmurhash3
     uint32_t seed = 0;
 

@@ -13,11 +13,8 @@ int main( int argc, char **argv)
     char * cUserText;
     char ** cArrayOfStrings;
 
-    cUserText = createOfText(fPtrUserFile, cUserText);
+    cUserText = createOfText(fPtrUserFile);
     fclose(fPtrUserFile);
-
-    printf("%lld\n", strlen(cUserText));
-    printf("%d\n", countOfStrings(cUserText));
 
     cArrayOfStrings = createArrayOfStrings(countOfStrings(cUserText));
 
@@ -25,14 +22,8 @@ int main( int argc, char **argv)
 
     sortOfArray(cArrayOfStrings, cUserText);
 
-    printf("********************После сортировки***************************\n");
-    printArrayOfStrings(cArrayOfStrings, countOfStrings(cUserText));
+    menu(cUserText, cArrayOfStrings);
 
-    free(cUserText);
-    free(cArrayOfStrings);
-
-
-    system("pause > nul");
 
     return 0;
 }

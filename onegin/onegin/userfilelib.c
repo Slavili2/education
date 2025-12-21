@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "userfilelib.h"
 
 FILE * openTxtFile(char * cNameFile, const char * param)
 {
@@ -149,6 +150,47 @@ void sortOfArray(char ** userArray, char * userText)
     }
 
 }
+void help(){
+    printf("\no - вывести оригинальный текст\
+           \ns - вывести отсортированный текст\
+           \nq - завершение работы программы\n");
+}
 
+void quit(char * cUserText, char ** cArrayOfStrings)
+{
+    free(cUserText);
+    free(cArrayOfStrings);
+}
+
+void printOriginalText(char * userText)
+{
+    printf("%s\n", userText);
+}
+
+void menu(char * cUserText, char ** cArrayOfStrings)
+{
+    switchOperations userChoice;
+
+    do{
+        help();
+        printf("\nВыберите действие: ");
+        userChoice = getchar();
+        while(getchar() != '\n');
+
+        switch(userChoice){
+            case SHOWSORTED:
+                 printArrayOfStrings(cArrayOfStrings, countOfStrings(cUserText));
+                 break;
+            case SHOWORIGINAL:
+                 printOriginalText(cUserText);
+                 break;
+            case QUIT:
+                 quit(cUserText, cArrayOfStrings);
+                 break;
+            default:
+                 printf("\nНеизвестное действие!!!\n");
+        }
+    }while('q' != userChoice);
+}
 
 

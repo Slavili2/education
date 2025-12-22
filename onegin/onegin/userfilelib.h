@@ -1,9 +1,9 @@
 #pragma once
 
-FILE * openTxtFile(char *, const char *);
+void openTxtFile(FILE **, char *, const char *);
 int countOfStrings(char *);
 void createOfText(FILE *, char **);
-char ** createArrayOfStrings(int);
+void createArrayOfStrings(char ***,int);
 void printArrayOfStrings(char **, int);
 void fillArrayOfStrings(char **, char *);
 size_t userStrLen(char *);

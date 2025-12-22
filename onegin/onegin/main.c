@@ -8,22 +8,22 @@ int main( int argc, char **argv)
 {
     system("chcp 1251 > nul");
 
-    FILE * fPtrUserFile = openTxtFile("onegin.txt", "r+b");
-
     char * cUserText;
     char ** cArrayOfStrings;
+    FILE * fPtrUserFile;
 
+    openTxtFile(&fPtrUserFile, "onegin.txt", "r+b");
     createOfText(fPtrUserFile, &cUserText);
+
     fclose(fPtrUserFile);
 
-    cArrayOfStrings = createArrayOfStrings(countOfStrings(cUserText));
+    createArrayOfStrings(&cArrayOfStrings, countOfStrings(cUserText));
 
     fillArrayOfStrings(cArrayOfStrings, cUserText);
 
     sortOfArray(cArrayOfStrings, cUserText);
 
     menu(cUserText, cArrayOfStrings);
-
 
     return 0;
 }

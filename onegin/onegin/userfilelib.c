@@ -3,16 +3,13 @@
 #include <string.h>
 #include "userfilelib.h"
 
-FILE * openTxtFile(char * cNameFile, const char * param)
+void openTxtFile(FILE ** ptrFile, char * cNameFile, const char * param)
 {
-    printf("%s\n", cNameFile);
-    FILE * ptrFile = fopen64(cNameFile, param);
-    if(NULL == ptrFile){
+    *ptrFile = fopen64(cNameFile, param);
+    if(NULL == *ptrFile){
         printf("File don't open!\n");
         abort();
     }
-
-    return ptrFile;
 }
 
 void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray)
@@ -51,14 +48,13 @@ int countOfStrings(char * tempArray){
 
 
 
-char ** createArrayOfStrings(int sizeOfArray)
+void createArrayOfStrings(char *** tempArray, int sizeOfArray)
 {
-    char ** tempArray = (char **)calloc(sizeOfArray, sizeof(char *));
-    if(NULL == tempArray){
+    *tempArray = (char **)calloc(sizeOfArray, sizeof(char *));
+    if(NULL == *tempArray){
         printf("Error: unable to allocate memory!\n");
         abort();
     }
-    return tempArray;
 }
 
 size_t userStrLen(char * userString)

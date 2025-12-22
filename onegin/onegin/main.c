@@ -21,8 +21,6 @@ int main( int argc, char **argv)
 
     fillArrayOfStrings(cArrayOfStrings, cUserText);
 
-    sortOfArray(cArrayOfStrings, cUserText);
-
     menu(cUserText, cArrayOfStrings);
 
     return 0;

@@ -122,17 +122,16 @@ int userStrCmp(char * str1, char * str2)
             result = 1;
     }
 
-
     return result;
 }
 
-void sortOfArray(char ** userArray, char * userText)
+void sortOfArray(char ** userArray, char * userText, int iOrderBy)
 {
     int countStrtings = countOfStrings(userText);
 
     for(int i = 0; i < (countStrtings - 1); i++){
         for(int j = (i+1); j < countStrtings; j++){
-            if( userStrCmp(*(userArray + i), *(userArray + j)) == 1)
+            if( userStrCmp(*(userArray + i), *(userArray + j)) == iOrderBy)
                 swapTwoElementsOfArray(userArray + i, userArray + j);
         }
     }
@@ -140,7 +139,8 @@ void sortOfArray(char ** userArray, char * userText)
 
 void help(){
     printf("\no - вывести оригинальный текст\
-           \ns - вывести отсортированный текст\
+           \nd - вывести отсортированный текст по убыванию\
+           \na - вывести отсортированный текст по возрастанию\
            \nq - завершение работы программы\n");
 }
 
@@ -166,7 +166,12 @@ void menu(char * cUserText, char ** cArrayOfStrings)
         while(getchar() != '\n');
 
         switch(userChoice){
-            case SHOWSORTED:
+            case ORDERBYDESCENDING:
+                 sortOfArray(cArrayOfStrings, cUserText, 1);
+                 printArrayOfStrings(cArrayOfStrings, countOfStrings(cUserText));
+                 break;
+            case ORDERBYASCENDING:
+                 sortOfArray(cArrayOfStrings, cUserText, -1);
                  printArrayOfStrings(cArrayOfStrings, countOfStrings(cUserText));
                  break;
             case SHOWORIGINAL:

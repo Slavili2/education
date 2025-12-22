@@ -91,11 +91,11 @@ void fillArrayOfStrings(char ** cArrayOfStrings, char * cUserText)
 
 }
 
-void swapTwoElementsOfArray(char ** userArray, int firstElement, int secondElement)
+void swapTwoElementsOfArray(char ** firstElement, char ** secondElement)
 {
-    char * swap = *(userArray + firstElement);
-    *(userArray + firstElement) = *(userArray + secondElement);
-    *(userArray + secondElement) = swap;
+    char * swap = *firstElement;
+    *firstElement = *secondElement;
+    *secondElement = swap;
 }
 
 
@@ -126,22 +126,18 @@ int userStrCmp(char * str1, char * str2)
     return result;
 }
 
-
 void sortOfArray(char ** userArray, char * userText)
 {
     int countStrtings = countOfStrings(userText);
-    int rezult = 1;
-    size_t minSizeString = 0;
 
     for(int i = 0; i < (countStrtings - 1); i++){
         for(int j = (i+1); j < countStrtings; j++){
             if( userStrCmp(*(userArray + i), *(userArray + j)) == 1)
-                swapTwoElementsOfArray(userArray, i, j);
-
+                swapTwoElementsOfArray(userArray + i, userArray + j);
         }
     }
-
 }
+
 void help(){
     printf("\no - вывести оригинальный текст\
            \ns - вывести отсортированный текст\

@@ -7,7 +7,7 @@ void createArrayOfStrings(char ***,int);
 void printArrayOfStrings(char **, int);
 void fillArrayOfStrings(char **, char *);
 size_t userStrLen(char *);
-void swapTwoElementsOfArray(char **, int, int);
+void swapTwoElementsOfArray(char **, char **);
 void sortOfArray(char **, char *);
 int userStrCmp(char *, char *);
 void help();

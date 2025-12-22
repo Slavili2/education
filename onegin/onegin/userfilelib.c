@@ -5,7 +5,6 @@
 
 FILE * openTxtFile(char * cNameFile, const char * param)
 {
-    //printf("\nopenTxtFile\n");
     printf("%s\n", cNameFile);
     FILE * ptrFile = fopen64(cNameFile, param);
     if(NULL == ptrFile){
@@ -78,7 +77,6 @@ void printArrayOfStrings(char ** cTempArray, int sizeOfArray)
             for(long long int j = 0; *(*(cTempArray+i)+j) != '\n' && *(*(cTempArray+i)+j) != '\0'; j++){
                 printf("%c",  *(*(cTempArray+i)+j) );
             }
-            //printf("| = %zu", userStrLen(*(cTempArray+i)));
             putchar('\n');
     }
 }
@@ -190,7 +188,7 @@ void menu(char * cUserText, char ** cArrayOfStrings)
             default:
                  printf("\nНеизвестное действие!!!\n");
         }
-    }while('q' != userChoice);
+    }while(QUIT != userChoice);
 }
 
 

@@ -15,20 +15,18 @@ FILE * openTxtFile(char * cNameFile, const char * param)
     return ptrFile;
 }
 
-char * createOfText(FILE * fPtrTempFile)
+void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray)
 {
-    char * cPtrTempArray;
     _off64_t sizeOfArray = 0;
     fseeko64(fPtrTempFile, 0, SEEK_END);
     sizeOfArray = ftello64(fPtrTempFile);
-    cPtrTempArray = (char *)calloc(sizeOfArray + 1, sizeof(char));
-    if(NULL == cPtrTempArray){
+    *cPtrTempArray = (char *)calloc(sizeOfArray + 1, sizeof(char));
+    if(NULL == *cPtrTempArray){
         printf("Error: unable to allocate memory!\n");
         abort();
     }
     rewind(fPtrTempFile);
-    fread(cPtrTempArray, sizeof(char), sizeOfArray, fPtrTempFile);
-    return cPtrTempArray;
+    fread(*cPtrTempArray, sizeof(char), sizeOfArray, fPtrTempFile);
 }
 
 

@@ -2,7 +2,7 @@
 
 FILE * openTxtFile(char *, const char *);
 int countOfStrings(char *);
-char * createOfText(FILE *);
+void createOfText(FILE *, char **);
 char ** createArrayOfStrings(int);
 void printArrayOfStrings(char **, int);
 void fillArrayOfStrings(char **, char *);

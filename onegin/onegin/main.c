@@ -13,7 +13,7 @@ int main( int argc, char **argv)
     char * cUserText;
     char ** cArrayOfStrings;
 
-    cUserText = createOfText(fPtrUserFile);
+    createOfText(fPtrUserFile, &cUserText);
     fclose(fPtrUserFile);
 
     cArrayOfStrings = createArrayOfStrings(countOfStrings(cUserText));

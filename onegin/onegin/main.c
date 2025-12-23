@@ -11,17 +11,20 @@ int main( int argc, char **argv)
     char * cUserText;
     char ** cArrayOfStrings;
     FILE * fPtrUserFile;
+    int cnt = 0;
 
     openTxtFile(&fPtrUserFile, "onegin.txt", "r+b");
     createOfText(fPtrUserFile, &cUserText);
 
     fclose(fPtrUserFile);
 
-    createArrayOfStrings(&cArrayOfStrings, countOfStrings(cUserText));
+    countOfStrings(cUserText, &cnt);
 
-    fillArrayOfStrings(cArrayOfStrings, cUserText);
+    createArrayOfStrings(&cArrayOfStrings, cnt);
 
-    menu(cUserText, cArrayOfStrings);
+    fillArrayOfStrings(&cArrayOfStrings, &cUserText, cnt);
+
+    menu(cUserText, cArrayOfStrings, cnt);
 
     return 0;
 }

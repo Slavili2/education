@@ -27,23 +27,20 @@ void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray)
 }
 
 
-int countOfStrings(char * tempArray){
+void countOfStrings(char * tempArray, int * cnt){
     long long int lastSymbolPosition = 0;
-    int result = 0;
 
     size_t stSizeUserArray = strlen(tempArray);
 
     for(size_t i = 0; i < stSizeUserArray; i++){
         if('\n' == *(tempArray+i) ){
-            result++;
+            (*cnt)++;
             lastSymbolPosition = i;
         }
     }
 
     if( (stSizeUserArray - lastSymbolPosition) > 1)
-        result++;
-
-    return result;
+        (*cnt)++;
 }
 
 
@@ -75,20 +72,20 @@ void printArrayOfStrings(char ** cTempArray, int sizeOfArray)
     }
 }
 
-void fillArrayOfStrings(char ** cArrayOfStrings, char * cUserText)
+void fillArrayOfStrings(char *** cArrayOfStrings, char ** cUserText, int cnt)
 {
-    int cArrayOfStringsCount = 0;
-    for(long long int i = 0; *(cUserText+i) != '\0'; i++){
+    long long int cArrayOfStringsCount = 0;
+
+    for(long long int i = 0; *(*cUserText+i) != '\0'; i++){
         if(0 == i){
-            *cArrayOfStrings = cUserText;
+            **cArrayOfStrings = *cUserText;
             cArrayOfStringsCount++;
         }
-        else if(*(cUserText+i) == '\n'){
-            *(cArrayOfStrings+cArrayOfStringsCount) = (cUserText+i+1);
+        else if(*(*cUserText + i) == '\n' && *(*cUserText + i + 1) != '\0'){
+            *(*cArrayOfStrings + cArrayOfStringsCount) = *cUserText + i + 1;
             cArrayOfStringsCount++;
         }
     }
-
 }
 
 void swapTwoElementsOfArray(char ** firstElement, char ** secondElement)
@@ -125,12 +122,10 @@ int userStrCmp(char * str1, char * str2)
     return result;
 }
 
-void sortOfArray(char ** userArray, char * userText, int iOrderBy)
+void sortOfArray(char ** userArray, char * userText, int iOrderBy, int cnt)
 {
-    int countStrtings = countOfStrings(userText);
-
-    for(int i = 0; i < (countStrtings - 1); i++){
-        for(int j = (i+1); j < countStrtings; j++){
+    for(int i = 0; i < (cnt - 1); i++){
+        for(int j = (i+1); j < cnt; j++){
             if( userStrCmp(*(userArray + i), *(userArray + j)) == iOrderBy)
                 swapTwoElementsOfArray(userArray + i, userArray + j);
         }
@@ -144,10 +139,10 @@ void help(){
            \nq - завершение работы программы\n");
 }
 
-void quit(char * cUserText, char ** cArrayOfStrings)
+void quit(char ** cUserText, char *** cArrayOfStrings)
 {
-    free(cUserText);
-    free(cArrayOfStrings);
+    free(*cUserText);
+    free(*cArrayOfStrings);
 }
 
 void printOriginalText(char * userText)
@@ -155,7 +150,7 @@ void printOriginalText(char * userText)
     printf("%s\n", userText);
 }
 
-void menu(char * cUserText, char ** cArrayOfStrings)
+void menu(char * cUserText, char ** cArrayOfStrings, int cnt)
 {
     switchOperations userChoice;
 
@@ -167,18 +162,18 @@ void menu(char * cUserText, char ** cArrayOfStrings)
 
         switch(userChoice){
             case ORDERBYDESCENDING:
-                 sortOfArray(cArrayOfStrings, cUserText, 1);
-                 printArrayOfStrings(cArrayOfStrings, countOfStrings(cUserText));
+                 sortOfArray(cArrayOfStrings, cUserText, ASC, cnt);
+                 printArrayOfStrings(cArrayOfStrings, cnt);
                  break;
             case ORDERBYASCENDING:
-                 sortOfArray(cArrayOfStrings, cUserText, -1);
-                 printArrayOfStrings(cArrayOfStrings, countOfStrings(cUserText));
+                 sortOfArray(cArrayOfStrings, cUserText, DESC, cnt);
+                 printArrayOfStrings(cArrayOfStrings, cnt);
                  break;
             case SHOWORIGINAL:
                  printOriginalText(cUserText);
                  break;
             case QUIT:
-                 quit(cUserText, cArrayOfStrings);
+                 quit(&cUserText, &cArrayOfStrings);
                  break;
             default:
                  printf("\nНеизвестное действие!!!\n");

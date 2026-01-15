@@ -2,7 +2,7 @@
 
 #define ASC 1
 #define DESC -1
-#define DEFAULT_FILE_NAME "onegin.txt"
+#define DEFAULT_FILE_NAME "onegin.dat"
 
 typedef enum {
     ORDERBYDESCENDING = 'd',
@@ -12,11 +12,9 @@ typedef enum {
 } switchOperations;
 
 void openTxtFile(FILE **, char *, const char *);
-void countOfStrings(char *, int *);
-void createOfText(FILE *, char **);
-void createArrayOfStrings(char ***,int);
+void createOfText(FILE *, char **, char ***, int *);
+void createArrayOfStrings(char ***,_off64_t);
 void printArrayOfStrings(char **, int);
-void fillArrayOfStrings(char ***, char **, int);
 size_t userStrLen(char *);
 void swapTwoElementsOfArray(char **, char **);
 void sortOfArray(char **, char *, int, int);

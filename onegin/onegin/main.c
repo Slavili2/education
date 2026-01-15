@@ -22,15 +22,16 @@ int main( int argc, char **argv)
     int cnt = 0;
 
     openTxtFile(&fPtrUserFile, fileNamePath, param);
-    createOfText(fPtrUserFile, &cUserText);
+    createOfText(fPtrUserFile, &cUserText, &cArrayOfStrings, &cnt);
 
     fclose(fPtrUserFile);
 
-    countOfStrings(cUserText, &cnt);
+#if 0
+printf("%p\n%p\n", cUserText+0, *(cArrayOfStrings+0));
+printf("%p\n%p\n", cUserText+27, *(cArrayOfStrings+1));
+printf("%s\n%d", cUserText, cnt);
+#endif
 
-    createArrayOfStrings(&cArrayOfStrings, cnt);
-
-    fillArrayOfStrings(&cArrayOfStrings, &cUserText, cnt);
 
     menu(cUserText, cArrayOfStrings, cnt);
 

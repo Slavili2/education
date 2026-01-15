@@ -12,40 +12,40 @@ void openTxtFile(FILE ** ptrFile, char * cNameFile, const char * param)
     }
 }
 
-void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray)
+void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray, char *** cArrayOfStrings, int * cnt)
 {
     _off64_t sizeOfArray = 0;
+    char cBuffer = 0;
     fseeko64(fPtrTempFile, 0, SEEK_END);
     sizeOfArray = ftello64(fPtrTempFile);
+
+    createArrayOfStrings(cArrayOfStrings, sizeOfArray);
+
     *cPtrTempArray = (char *)calloc(sizeOfArray + 1, sizeof(char));
     if(NULL == *cPtrTempArray){
         printf("Error: unable to allocate memory!\n");
         abort();
     }
     rewind(fPtrTempFile);
-    fread(*cPtrTempArray, sizeof(char), sizeOfArray, fPtrTempFile);
-}
 
-
-void countOfStrings(char * tempArray, int * cnt){
-    long long int lastSymbolPosition = 0;
-
-    size_t stSizeUserArray = strlen(tempArray);
-
-    for(size_t i = 0; i < stSizeUserArray; i++){
-        if('\n' == *(tempArray+i) ){
-            (*cnt)++;
-            lastSymbolPosition = i;
+    for(_off64_t i = 0, j = (sizeOfArray + 1); i < j && 1 == fread(&cBuffer, sizeof(char), 1, fPtrTempFile) ; i++){
+        *(*cPtrTempArray+i) = cBuffer;
+        if(0 == i){
+            *(*cArrayOfStrings + ((*cnt)++)) = (*cPtrTempArray+i);
+        }
+        else if('\n' == cBuffer){
+            *(*cArrayOfStrings + ((*cnt)++)) = (*cPtrTempArray+i+1);
         }
     }
 
-    if( (stSizeUserArray - lastSymbolPosition) > 1)
-        (*cnt)++;
+    *cArrayOfStrings=(char **)realloc( (void **)*cArrayOfStrings, (*cnt) * sizeof(char *));
 }
 
 
 
-void createArrayOfStrings(char *** tempArray, int sizeOfArray)
+
+
+void createArrayOfStrings(char *** tempArray, _off64_t sizeOfArray)
 {
     *tempArray = (char **)calloc(sizeOfArray, sizeof(char *));
     if(NULL == *tempArray){
@@ -69,22 +69,6 @@ void printArrayOfStrings(char ** cTempArray, int sizeOfArray)
                 printf("%c",  *(*(cTempArray+i)+j) );
             }
             putchar('\n');
-    }
-}
-
-void fillArrayOfStrings(char *** cArrayOfStrings, char ** cUserText, int cnt)
-{
-    long long int cArrayOfStringsCount = 0;
-
-    for(long long int i = 0; *(*cUserText+i) != '\0'; i++){
-        if(0 == i){
-            **cArrayOfStrings = *cUserText;
-            cArrayOfStringsCount++;
-        }
-        else if(*(*cUserText + i) == '\n' && *(*cUserText + i + 1) != '\0'){
-            *(*cArrayOfStrings + cArrayOfStringsCount) = *cUserText + i + 1;
-            cArrayOfStringsCount++;
-        }
     }
 }
 

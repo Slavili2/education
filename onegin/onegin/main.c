@@ -26,13 +26,6 @@ int main( int argc, char **argv)
 
     fclose(fPtrUserFile);
 
-#if 0
-printf("%p\n%p\n", cUserText+0, *(cArrayOfStrings+0));
-printf("%p\n%p\n", cUserText+27, *(cArrayOfStrings+1));
-printf("%s\n%d", cUserText, cnt);
-#endif
-
-
     menu(cUserText, cArrayOfStrings, cnt);
 
     return 0;

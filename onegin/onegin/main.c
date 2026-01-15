@@ -23,7 +23,6 @@ int main( int argc, char **argv)
 
     openTxtFile(&fPtrUserFile, fileNamePath, param);
     createOfText(fPtrUserFile, &cUserText, &cArrayOfStrings, &cnt);
-
     fclose(fPtrUserFile);
 
     menu(cUserText, cArrayOfStrings, cnt);

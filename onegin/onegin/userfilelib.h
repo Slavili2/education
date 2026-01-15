@@ -2,6 +2,7 @@
 
 #define ASC 1
 #define DESC -1
+#define DEFAULT_FILE_NAME "onegin.txt"
 
 typedef enum {
     ORDERBYDESCENDING = 'd',

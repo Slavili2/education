@@ -20,29 +20,41 @@ void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray, char *** cArrayOfS
     sizeOfArray = ftello64(fPtrTempFile);
 
     createArrayOfStrings(cArrayOfStrings, sizeOfArray);
+    createArrayOfOriginalText(cPtrTempArray, sizeOfArray + 1);
 
-    *cPtrTempArray = (char *)calloc(sizeOfArray + 1, sizeof(char));
-    if(NULL == *cPtrTempArray){
-        printf("Error: unable to allocate memory!\n");
-        abort();
-    }
     rewind(fPtrTempFile);
 
     for(_off64_t i = 0, j = (sizeOfArray + 1); i < j && 1 == fread(&cBuffer, sizeof(char), 1, fPtrTempFile) ; i++){
         *(*cPtrTempArray+i) = cBuffer;
-        if(0 == i){
+        if(0 == i)
             *(*cArrayOfStrings + ((*cnt)++)) = (*cPtrTempArray+i);
-        }
-        else if('\n' == cBuffer){
+        else if('\n' == cBuffer)
             *(*cArrayOfStrings + ((*cnt)++)) = (*cPtrTempArray+i+1);
-        }
     }
 
-    *cArrayOfStrings=(char **)realloc( (void **)*cArrayOfStrings, (*cnt) * sizeof(char *));
+    reallocArray(cArrayOfStrings, *cnt);
 }
 
 
+void reallocArray(char *** tempArray, int sizeOfArray)
+{
+    *tempArray=(char **)realloc( (void **)*tempArray, sizeOfArray * sizeof(char *));
+    if(NULL == *tempArray){
+        printf("Error: unable to allocate memory!\n");
+        abort();
+    }
+}
 
+
+void createArrayOfOriginalText(char ** tempText, _off64_t sizeOfArray)
+
+{
+    *tempText = (char *)calloc(sizeOfArray, sizeof(char ));
+    if(NULL == *tempText){
+        printf("Error: unable to allocate memory!\n");
+        abort();
+    }
+}
 
 
 void createArrayOfStrings(char *** tempArray, _off64_t sizeOfArray)

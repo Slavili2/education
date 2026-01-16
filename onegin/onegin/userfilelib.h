@@ -14,6 +14,8 @@ typedef enum {
 void openTxtFile(FILE **, char *, const char *);
 void createOfText(FILE *, char **, char ***, int *);
 void createArrayOfStrings(char ***,_off64_t);
+void createArrayOfOriginalText(char **, _off64_t);
+void reallocArray(char ***, int);
 void printArrayOfStrings(char **, int);
 size_t userStrLen(char *);
 void swapTwoElementsOfArray(char **, char **);

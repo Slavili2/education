@@ -135,10 +135,11 @@ void help(){
            \nq - завершение работы программы\n");
 }
 
-void quit(char ** cUserText, char *** cArrayOfStrings)
+void quit(char ** cUserText, char ** fileNamePath, char *** cArrayOfStrings)
 {
     free(*cUserText);
     free(*cArrayOfStrings);
+    free(*fileNamePath);
 }
 
 void printOriginalText(char * userText)
@@ -146,7 +147,21 @@ void printOriginalText(char * userText)
     printf("%s\n", userText);
 }
 
-void menu(char * cUserText, char ** cArrayOfStrings, int cnt)
+void createFileNamePath(char ** fileNamePath, char *** argv, int argc)
+{
+    *fileNamePath = (char *)calloc(SIZE_FILE_NAME_PATH, sizeof(char));
+    if(NULL == *fileNamePath){
+        printf("Error: unable to allocate memory!\n");
+        abort();
+    }
+    if(argc == 1)
+        strcat(*fileNamePath, DEFAULT_FILE_NAME);
+    else if(argc == 2)
+        strcat(*fileNamePath, *(*argv + 1));
+}
+
+
+void menu(char * cUserText, char ** cArrayOfStrings, char ** fileNamePath, int cnt)
 {
     switchOperations userChoice;
 
@@ -169,7 +184,7 @@ void menu(char * cUserText, char ** cArrayOfStrings, int cnt)
                  printOriginalText(cUserText);
                  break;
             case QUIT:
-                 quit(&cUserText, &cArrayOfStrings);
+                 quit(&cUserText, fileNamePath, &cArrayOfStrings);
                  break;
             default:
                  printf("\nНеизвестное действие!!!\n");

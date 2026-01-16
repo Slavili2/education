@@ -3,6 +3,7 @@
 #define ASC 1
 #define DESC -1
 #define DEFAULT_FILE_NAME "onegin.dat"
+#define SIZE_FILE_NAME_PATH 512
 
 typedef enum {
     ORDERBYDESCENDING = 'd',
@@ -15,6 +16,7 @@ void openTxtFile(FILE **, char *, const char *);
 void createOfText(FILE *, char **, char ***, int *);
 void createArrayOfStrings(char ***,_off64_t);
 void createArrayOfOriginalText(char **, _off64_t);
+void createFileNamePath(char **, char ***, int);
 void reallocArray(char ***, int);
 void printArrayOfStrings(char **, int);
 size_t userStrLen(char *);
@@ -22,7 +24,7 @@ void swapTwoElementsOfArray(char **, char **);
 void sortOfArray(char **, char *, int, int);
 int userStrCmp(char *, char *);
 void help();
-void menu(char *, char **, int);
-void quit(char **, char ***);
+void menu(char *, char **, char **, int);
+void quit(char **, char ** ,char ***);
 void printOriginalText(char *);
 

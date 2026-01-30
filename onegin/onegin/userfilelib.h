@@ -26,5 +26,5 @@ int userStrCmp(char *, char *);
 void help();
 void menu(char *, char **, char **, int);
 void quit(char **, char ** ,char ***);
-void printOriginalText(char *);
+void printOriginalText(char *, int);
 

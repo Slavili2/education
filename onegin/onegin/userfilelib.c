@@ -28,8 +28,10 @@ void createOfText(FILE * fPtrTempFile, char ** cPtrTempArray, char *** cArrayOfS
         *(*cPtrTempArray+i) = cBuffer;
         if(0 == i)
             *(*cArrayOfStrings + ((*cnt)++)) = (*cPtrTempArray+i);
-        else if('\n' == cBuffer)
+        else if('\n' == cBuffer){
             *(*cArrayOfStrings + ((*cnt)++)) = (*cPtrTempArray+i+1);
+            *(*cPtrTempArray+i) = '\0';
+        }
     }
 
     reallocArray(cArrayOfStrings, *cnt);
@@ -77,10 +79,7 @@ size_t userStrLen(char * userString)
 void printArrayOfStrings(char ** cTempArray, int sizeOfArray)
 {
     for(long long int i = 0; i < sizeOfArray; i++){
-            for(long long int j = 0; *(*(cTempArray+i)+j) != '\n' && *(*(cTempArray+i)+j) != '\0'; j++){
-                printf("%c",  *(*(cTempArray+i)+j) );
-            }
-            putchar('\n');
+        printf("%s\n",  *(cTempArray+i) );
     }
 }
 
@@ -142,9 +141,13 @@ void quit(char ** cUserText, char ** fileNamePath, char *** cArrayOfStrings)
     free(*fileNamePath);
 }
 
-void printOriginalText(char * userText)
+void printOriginalText(char * userText, int sizeOfArray)
 {
-    printf("%s\n", userText);
+    int nItems = 0;
+    for(int i = 0; i < sizeOfArray; i++){
+        nItems = nItems + printf("%s", (userText + nItems + i) );
+        printf("\n");
+    }
 }
 
 void createFileNamePath(char ** fileNamePath, char *** argv, int argc)
@@ -181,7 +184,7 @@ void menu(char * cUserText, char ** cArrayOfStrings, char ** fileNamePath, int c
                  printArrayOfStrings(cArrayOfStrings, cnt);
                  break;
             case SHOWORIGINAL:
-                 printOriginalText(cUserText);
+                 printOriginalText(cUserText, cnt);
                  break;
             case QUIT:
                  quit(&cUserText, fileNamePath, &cArrayOfStrings);

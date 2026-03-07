@@ -5,4 +5,6 @@
 *.depend
 *.layout
 Debug/*
+gcd/Debug/*
 Release/*
+gcd/Release/*
